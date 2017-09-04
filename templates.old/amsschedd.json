@@ -1,0 +1,31 @@
+{
+  "id": "htcondor-submitter-ams",
+  "args": ["-s", "{{ams_config_cm_ip}}", "-I", "{{ams_config_schedd_ip}}", "-k", "{{public_key_url}}"],
+  "cpus": 3,
+  "mem": 2048.0,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ams_config_condor_image}}",
+      "privileged": true,
+      "network": "HOST"
+    },
+    "volumes": [{
+        "containerPath": "/cvmfs",
+        "hostPath": "/cvmfs",
+        "mode": "RW"
+    }, {
+        "containerPath": "/etc/ssh",
+        "hostPath": "/etc/ssh",
+        "mode": "RW"
+    }]
+  },
+  "constraints": [
+    ["hostname", "UNIQUE"],
+    ["hostname", "LIKE", "{{ams_config_schedd_ip}}"]
+  ],
+  "env": {
+    "ONEDATA_ACCES_TOKEN": "{{ams_config_onedatatoken}}",
+    "AMS_ONEDATA_CACHE": "{{ams_config_onedatacache}}"
+  }
+}

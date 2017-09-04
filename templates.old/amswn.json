@@ -1,0 +1,25 @@
+{
+  "id": "htcondor-executor-ams",
+  "args": ["-e", "{{ams_config_cm_ip}}"],
+  "cpus": 1,
+  "mem": 2000.0,
+  "instances": 2,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ams_config_condor_image}}",
+      "forcePullImage": true,
+      "privileged": true,
+      "network": "BRIDGE"
+    },
+    "volumes": [{
+        "containerPath": "/cvmfs",
+        "hostPath": "/cvmfs",
+        "mode": "RW"
+    }]
+  },
+  "env": {
+    "ONEDATA_ACCES_TOKEN": "{{ams_config_onedatatoken}}",
+    "AMS_ONEDATA_CACHE": "{{ams_config_onedatacache}}"
+  }
+}
